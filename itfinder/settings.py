@@ -36,6 +36,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'drf_yasg',
+    'debug_toolbar',
+
+    'projects',
 ]
 
 MIDDLEWARE = [
@@ -47,6 +52,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+if SQL_DEBUG:
+    MIDDLEWARE = MIDDLEWARE + [
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+        'utils.middleware.DebugQuerysetsWare',
+    ]
 
 ROOT_URLCONF = 'itfinder.urls'
 
@@ -117,8 +128,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-# STATIC_ROOT = '/static/'
-STATIC_URL = '/static/'
+# STATIC_ROOT = env.str('STATIC_ROOT', '/static/')
+STATIC_URL = env.str('STATIC_ROOT', '/static/')
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
@@ -127,3 +138,8 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+if DEBUG:
+    import socket
+    hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+    INTERNAL_IPS = [ip[: ip.rfind(".")] + ".1" for ip in ips] + ["127.0.0.1", "10.0.2.2"]
