@@ -1,7 +1,6 @@
-from django.shortcuts import render, redirect
-
-from projects.forms import ProjectForm
-from projects.models import Project
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Project, Tag
+from .forms import ProjectForm
 
 
 def projects(request):
@@ -10,10 +9,10 @@ def projects(request):
     return render(request, 'projects/projects.html', context)
 
 
-def project(request, pk):
-    projectObj = Project.objects.get(id=pk)
-    tags = projectObj.tags.all()
-    return render(request, 'projects/single-project.html', {'project': projectObj})
+def project(request, project_slug):
+    project = Project.objects.get(slug=project_slug)
+    tags = project.tags.all()
+    return render(request, 'projects/single-project.html', {'project': project})
 
 
 def createProject(request):
@@ -46,3 +45,13 @@ def deleteProject(request, pk):
         return redirect('projects')
     context = {'object': project}
     return render(request, 'projects/delete.html', context)
+
+
+def projects_by_tag(request, tag_slug):
+    tag = get_object_or_404(Tag, slug=tag_slug)
+    projects = Project.objects.filter(tags__in=[tag])
+    context = {
+        "projects": projects
+    }
+
+    return render(request, "projects/projects.html", context)
