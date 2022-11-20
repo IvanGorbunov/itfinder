@@ -7,7 +7,6 @@ from .yasg import urlpatterns as doc_url
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('', include('projects.urls')),
-] \
-              + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) \
-              + doc_url
+    path('', include('projects.urls')),
+    path('__debug__/', include('debug_toolbar.urls')),
+] + doc_url
