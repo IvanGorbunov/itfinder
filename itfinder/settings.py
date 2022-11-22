@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'drf_yasg',
     'debug_toolbar',
 
-    'projects',
+    'projects.apps.ProjectsConfig',
+    'users.apps.UsersConfig'
 ]
 
 MIDDLEWARE = [
@@ -89,6 +90,7 @@ DATABASES = {
     'default': env.db()
 }
 
+AUTH_USER_MODEL = 'users.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
