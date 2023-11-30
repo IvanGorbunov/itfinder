@@ -11,8 +11,12 @@ def projects(request):
 
 def project(request, project_slug):
     project = Project.objects.get(slug=project_slug)
-    tags = project.tags.all()
-    return render(request, 'projects/single-project.html', {'project': project})
+    # tags = project.tags.all()
+    context = {
+        'projects': projects,
+        'developers': project.developers.all(),
+    }
+    return render(request, 'projects/single-project.html', context)
 
 
 def createProject(request):

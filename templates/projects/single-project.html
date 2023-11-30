@@ -29,13 +29,18 @@
             </div>
             <div class="column column--2of3">
                 <img class="singleProject__preview" src="{{ project.image.url }}" alt="скриншот проекта" />
-                <a href="#"
-                    class="singleProject__developer">{{ project.owner.name }}</a>
+{#                <a href="{% url 'users:user-profile' project.owner %}" class="singleProject__developer">{{ project.owner.name }}</a>#}
                 <h2 class="singleProject__title">{{ project.title }}</h2>
                 <h3 class="singleProject__subtitle">Информация о проекте</h3>
                 <div class="singleProject__info">
                     {{ project.description }}
                 </div>
+                {% if developers %}
+                    <h3 class="singleProject__subtitle">Разработчики</h3>
+                    {% for developer in developers %}
+                        <a href="{% url 'users:user-profile' developer.id %}" class="singleProject__developer">{{ developer.name }}</a>
+                    {% endfor %}
+                {% endif %}
                 <div class="comments">
                     <h3 class="singleProject__subtitle">Оценки и отзывы</h3>
                     <h5 class="project--rating">
@@ -69,13 +74,13 @@
                         {% for review in project.review_set.all %}
                         {% if review.body %}
                         <div class="comment">
-                            <a href="{% url 'user-profile' review.owner.id  %}">
+                            <a href="{% url 'users:user-profile' review.owner.id  %}">
                                 <img class="avatar avatar--md" src="{{ review.owner.profile_image.url }}" alt="user" />
                             </a>
 
 
                             <div class="comment__details">
-                                <a href="{% url 'user-profile' review.owner.id  %}"
+                                <a href="{% url 'users:user-profile' review.owner.id  %}"
                                     class="comment__author">{{ review.owner.name }}</a>
                                 <p class="comment__info">{{ review.body|linebreaksbr }}</p>
                             </div>

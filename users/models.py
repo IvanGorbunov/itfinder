@@ -6,6 +6,7 @@ from users.choices import UserRole
 
 
 class Skill(models.Model):
+    """ Модель: Навыки """
     name = models.CharField(max_length=50, blank=True, null=True)
     slug = models.SlugField()
     description = models.TextField(null=True, blank=True)
@@ -18,6 +19,7 @@ class Skill(models.Model):
 
 
 class User(AbstractUser):
+    """ Модель: Пользователи """
     name = models.CharField(max_length=50, blank=True, null=True)
     email = models.EmailField(max_length=50, blank=True, null=True)
     city = models.CharField(max_length=50, blank=True, null=True)
@@ -39,5 +41,5 @@ class User(AbstractUser):
     def __str__(self):
         return str(self.username)
 
-    class Meta:
+    class Meta(AbstractUser.Meta):
         ordering = ['created']
